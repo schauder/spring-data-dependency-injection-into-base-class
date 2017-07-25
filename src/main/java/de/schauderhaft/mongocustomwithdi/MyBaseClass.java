@@ -15,11 +15,6 @@
  */
 package de.schauderhaft.mongocustomwithdi;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.query.MongoEntityInformation;
 import org.springframework.data.mongodb.repository.support.SimpleMongoRepository;
@@ -27,23 +22,13 @@ import org.springframework.data.mongodb.repository.support.SimpleMongoRepository
 /**
  * @author Jens Schauder
  */
-public class MyBaseClass extends SimpleMongoRepository implements ApplicationContextAware, CustomStuff {
+public class MyBaseClass extends SimpleMongoRepository implements CustomStuff {
 
 
 	private SomeBean someBean;
 
 	public MyBaseClass(MongoEntityInformation metadata, MongoOperations mongoOperations) {
 		super(metadata, mongoOperations);
-	}
-
-	@PostConstruct
-	public void after() {
-		System.out.println("in post construct");
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		System.out.println("got an application context");
 	}
 
 	public void setSomeBean(SomeBean someBean) {
