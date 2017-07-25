@@ -27,7 +27,7 @@ import org.springframework.data.mongodb.repository.support.SimpleMongoRepository
 /**
  * @author Jens Schauder
  */
-public class MyBaseClass extends SimpleMongoRepository implements ApplicationContextAware {
+public class MyBaseClass extends SimpleMongoRepository implements ApplicationContextAware, CustomStuff {
 
 
 	private SomeBean someBean;
@@ -49,5 +49,10 @@ public class MyBaseClass extends SimpleMongoRepository implements ApplicationCon
 	public void setSomeBean(SomeBean someBean) {
 		System.out.println("got some bean");
 		this.someBean = someBean;
+	}
+
+	@Override
+	public void doSomethingCustom() {
+		someBean.doingBeanyStuff();
 	}
 }
