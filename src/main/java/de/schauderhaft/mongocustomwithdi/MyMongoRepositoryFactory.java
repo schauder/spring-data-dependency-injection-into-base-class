@@ -15,8 +15,6 @@
  */
 package de.schauderhaft.mongocustomwithdi;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactory;
 import org.springframework.data.repository.core.RepositoryInformation;
@@ -26,10 +24,11 @@ import org.springframework.data.repository.core.RepositoryInformation;
  */
 public class MyMongoRepositoryFactory extends MongoRepositoryFactory {
 
-	private BeanFactory beanFactory;
+	private final SomeBean bean;
 
-	public MyMongoRepositoryFactory(MongoOperations mongoOperations) {
+	MyMongoRepositoryFactory(MongoOperations mongoOperations, SomeBean bean) {
 		super(mongoOperations);
+		this.bean = bean;
 	}
 
 	@Override
@@ -37,14 +36,9 @@ public class MyMongoRepositoryFactory extends MongoRepositoryFactory {
 		Object targetRepository = super.getTargetRepository(information);
 		System.out.println("caught the target repository");
 		if (targetRepository instanceof MyBaseClass) {
-			((MyBaseClass) targetRepository).setSomeBean(beanFactory.getBean(SomeBean.class));
+			((MyBaseClass) targetRepository).setSomeBean(bean);
 		}
 		return targetRepository;
 	}
 
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		super.setBeanFactory(beanFactory);
-		this.beanFactory = beanFactory;
-	}
 }
